@@ -1,0 +1,17 @@
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\bin\Debug\net8.0\BusinessLogic.deps.json
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\bin\Debug\net8.0\BusinessLogic.dll
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\bin\Debug\net8.0\BusinessLogic.pdb
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\bin\Debug\net8.0\Core.dll
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\bin\Debug\net8.0\Core.pdb
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.csproj.AssemblyReference.cache
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.AssemblyInfoInputs.cache
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.AssemblyInfo.cs
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.csproj.CoreCompileInputs.cache
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.csproj.CopyComplete
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.dll
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\refint\BusinessLogic.dll
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.pdb
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\ref\BusinessLogic.dll
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\bin\Debug\net8.0\BusinessLogic.runtimeconfig.json
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.genruntimeconfig.cache
