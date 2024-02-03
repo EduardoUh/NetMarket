@@ -11,6 +11,9 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // we must add the typeof method since the interface and its implementation work with generics
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
             services.AddDbContext<NetMarketDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));

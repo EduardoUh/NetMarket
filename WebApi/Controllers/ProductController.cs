@@ -6,20 +6,19 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController(IProductRepository productRepository) : ControllerBase
+    public class ProductController(IGenericRepository<Product> productRepository) : ControllerBase
     {
-        private readonly IProductRepository _productRepository = productRepository;
+        private readonly IGenericRepository<Product> _productRepository = productRepository;
 
         // base url = http://localhost:5158
         // api route = /api/Product
         // endpoint = /Product
         // http://localhost:5158/api/Product
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts()
         {
-            var products = await _productRepository.GetAllProductsAsync();
             // when we return more than one record the result must be wrapped by the Ok method.
-            return Ok(products);
+            return Ok(await _productRepository.GetAllAsync());
         }
 
         // base url = http://localhost:5158
@@ -30,7 +29,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
             // since it is just one record it is not neccessary to wrapp it with the Ok method
-            return await _productRepository.GetProductByIdAsync(id);
+            return await _productRepository.GetByIdAsync(id);
         }
 
     }

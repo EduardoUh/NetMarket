@@ -15,3 +15,4 @@ D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\B
 D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\ref\BusinessLogic.dll
 D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\bin\Debug\net8.0\BusinessLogic.runtimeconfig.json
 D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.genruntimeconfig.cache
+D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\obj\Debug\net8.0\BusinessLogic.sourcelink.json

@@ -1,0 +1,23 @@
+﻿using Core.Entities;
+using Core.Specifications;
+using Microsoft.EntityFrameworkCore;
+
+namespace BusinessLogic.Data
+{
+    public class SpecificationEvaluator<T> where T : BaseClass
+    {
+        // inputQuery is the entity in which the query is being builded
+        public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> spec)
+        {
+            // if there is a criteria in the spec then add it to the query
+            if (spec.Criteria != null)
+            {
+                inputQuery = inputQuery.Where(spec.Criteria);
+            }
+            // dinamically adding all the relations/includes that the entity has with other entities
+            inputQuery = spec.Includes.Aggregate(inputQuery, (current, include) => current.Include(include));
+
+            return inputQuery;
+        }
+    }
+}
