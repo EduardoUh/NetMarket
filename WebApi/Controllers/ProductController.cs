@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -17,8 +18,9 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts()
         {
+            var spec = new ProductWithCategoryAndBrandSpecification();
             // when we return more than one record the result must be wrapped by the Ok method.
-            return Ok(await _productRepository.GetAllAsync());
+            return Ok(await _productRepository.GetAllWithSpecAsync(spec));
         }
 
         // base url = http://localhost:5158
@@ -28,8 +30,12 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
+            // spec object should include the logicall condition of the query, also the relations between the
+            // entities. Product, brand and category in this case
+            var spec = new ProductWithCategoryAndBrandSpecification(id);
+
             // since it is just one record it is not neccessary to wrapp it with the Ok method
-            return await _productRepository.GetByIdAsync(id);
+            return await _productRepository.GetByIdWithSpecAsync(spec);
         }
 
     }
