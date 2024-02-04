@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoryController(IGenericRepository<Category> categoryRepository) : ControllerBase
+   public class CategoryController(IGenericRepository<Category> categoryRepository) : BaseApiController
     {
         private readonly IGenericRepository<Category> _categoryRepository = categoryRepository;
 

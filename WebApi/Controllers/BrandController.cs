@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BrandController(IGenericRepository<Brand> brandRepository) : ControllerBase
+    public class BrandController(IGenericRepository<Brand> brandRepository) : BaseApiController
     {
         private readonly IGenericRepository<Brand> _brandRepository = brandRepository;
 

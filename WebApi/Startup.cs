@@ -2,6 +2,8 @@
 using BusinessLogic.Logic;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Dtos;
+using WebApi.Middleware;
 
 namespace WebApi
 {
@@ -11,6 +13,7 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(MappingProfiles));
             // we must add the typeof method since the interface and its implementation work with generics
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
@@ -26,10 +29,16 @@ namespace WebApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            /* No longer neccessary because we do this in the ExceptionMiddleware class
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            */
+
+            app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UseStatusCodePagesWithReExecute("/errors", "?code={0}");
 
             app.UseRouting();
             app.UseAuthentication();
