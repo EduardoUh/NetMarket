@@ -14,6 +14,24 @@ namespace BusinessLogic.Data
             {
                 inputQuery = inputQuery.Where(spec.Criteria);
             }
+
+            // adding ordering
+            if (spec.OrderBy != null)
+            {
+                inputQuery = inputQuery.OrderBy(spec.OrderBy);
+            }
+
+            if (spec.OrderByDescending != null)
+            {
+                inputQuery = inputQuery.OrderByDescending(spec.OrderByDescending);
+            }
+
+            // adding pagination
+            if (spec.IsPaginationEnabled)
+            {
+                inputQuery = inputQuery.Skip(spec.Skip).Take(spec.Take);
+            }
+
             // dinamically adding all the relations/includes that the entity has with other entities
             inputQuery = spec.Includes.Aggregate(inputQuery, (current, include) => current.Include(include));
 

@@ -25,6 +25,15 @@ namespace WebApi
             // specified in ProductRepository to the specified IServiceColleciton
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddControllers();
+
+            // adding cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsRule", rule =>
+                {
+                    rule.AllowAnyHeader().AllowAnyMethod().WithOrigins("*");
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,6 +50,10 @@ namespace WebApi
             app.UseStatusCodePagesWithReExecute("/errors", "?code={0}");
 
             app.UseRouting();
+
+            // implementing the cors config
+            app.UseCors("CorsRule");
+
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

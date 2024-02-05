@@ -18,15 +18,35 @@ namespace WebApi.Controllers
         // endpoint = /Product
         // http://localhost:5158/api/Product
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts()
+        // it is neccesary to add the property FromQuery otherwise you may have an unexpected behaviour
+        public async Task<ActionResult<Pagination<ProductDto>>> GetProducts([FromQuery] ProductSpecificationParams productParams)
         {
-            var spec = new ProductWithCategoryAndBrandSpecification();
+            var spec = new ProductWithCategoryAndBrandSpecification(productParams);
 
             var products = await _productRepository.GetAllWithSpecAsync(spec);
 
+            var specCount = new ProductForCountingSpecification(productParams);
+
+            var totalProducts = await _productRepository.CountAsync(specCount);
+
+            var rounded = Math.Ceiling(Convert.ToDecimal(totalProducts) / Convert.ToDecimal(productParams.PageSize));
+
+            var totalPages = Convert.ToInt32(rounded);
+
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
+
+            return Ok(
+                new Pagination<ProductDto>
+                {
+                    Count = totalProducts,
+                    Data = data,
+                    PageCount = totalPages,
+                    PageIndex = productParams.PageIndex,
+                    PageSize = productParams.PageSize
+                });
             // mapping the list of Product objects to a list of ProductDto objects
             // when we return more than one record the result must be wrapped by the Ok method.
-            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products));
+            // return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products));
         }
 
         // base url = http://localhost:5158

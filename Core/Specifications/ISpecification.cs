@@ -9,5 +9,14 @@ namespace Core.Specifications
 
         // entities to be included in the query
         List<Expression<Func<T, object>>> Includes { get; }
+
+        // this is taken as ascending by default
+        Expression<Func<T, object>> OrderBy { get; }
+        Expression<Func<T, object>> OrderByDescending { get; }
+
+        // pagination properties
+        int Take { get; }
+        int Skip { get; }
+        bool IsPaginationEnabled { get; }
     }
 }
