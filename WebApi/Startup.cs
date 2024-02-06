@@ -1,6 +1,8 @@
 ﻿using BusinessLogic.Data;
 using BusinessLogic.Logic;
+using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Dtos;
 using WebApi.Middleware;
@@ -13,6 +15,18 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // setting up Identity Core
+            // builder is an instance of identity core (representation of the model)
+            var builder = services.AddIdentityCore<User>();
+            // adding services for the user type, it needs it to buil the tables
+            builder = new IdentityBuilder(builder.UserType, builder.Services);
+            builder.AddEntityFrameworkStores<SecurityDbContext>();
+            // adding user manager allow us to use that object to perform transactions over the security tables
+            builder.AddSignInManager<SignInManager<User>>();
+
+            // adding authentication
+            services.AddAuthentication();
+
             services.AddAutoMapper(typeof(MappingProfiles));
             // we must add the typeof method since the interface and its implementation work with generics
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -20,6 +34,10 @@ namespace WebApi
             services.AddDbContext<NetMarketDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+            services.AddDbContext<SecurityDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("SecurityIdentityConnection"));
             });
             // this way we are adding a object of type IProductRepository with an implementation type
             // specified in ProductRepository to the specified IServiceColleciton

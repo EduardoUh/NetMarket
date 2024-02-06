@@ -16,6 +16,8 @@ app.MapControllers();
 app.Run();*/
 
 using BusinessLogic.Data;
+using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApi
@@ -37,6 +39,12 @@ namespace WebApi
                     await context.Database.MigrateAsync();
 
                     await NetMarketDbContextData.LoadDataAsync(context, loggerFactory);
+
+                    var userManager = services.GetRequiredService<UserManager<User>>();
+                    var identityContext = services.GetRequiredService<SecurityDbContext>();
+
+                    await identityContext.Database.MigrateAsync();
+                    await SecurityDbContextData.SeedUserAsync(userManager, loggerFactory);
                 }
                 catch (Exception ex)
                 {
