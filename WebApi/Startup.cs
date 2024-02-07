@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Text;
 using WebApi.Dtos;
 using WebApi.Middleware;
@@ -56,9 +57,16 @@ namespace WebApi
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SecurityIdentityConnection"));
             });
+
+            // adding redis service
+            var redisConfiguration = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis")!, true);
+            redisConfiguration.AbortOnConnectFail = false;
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConfiguration));
+
             // this way we are adding a object of type IProductRepository with an implementation type
             // specified in ProductRepository to the specified IServiceColleciton
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddControllers();
 
             // adding cors

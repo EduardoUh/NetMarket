@@ -37,10 +37,28 @@ namespace BusinessLogic.Logic
             return await ApplySpecification(spec).CountAsync();
         }
 
+        // helper method that is used to apply the criteria, includes, pagination, etc. to the IQueryable object and return it ready
+        // to be executed
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
         }
-    
+
+        public async Task<int> AddAsync(T entity)
+        {
+            await _context.Set<T>().AddAsync(entity);
+
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateAsync(T entity)
+        {
+            // attaching entity to the context
+            _context.Set<T>().Attach(entity);
+            // stating that the entity state is modified
+            _context.Entry(entity).State = EntityState.Modified;
+
+            return await _context.SaveChangesAsync();
+        }
     }
 }

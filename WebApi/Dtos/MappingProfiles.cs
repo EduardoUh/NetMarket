@@ -12,6 +12,7 @@ namespace WebApi.Dtos
                 // to be mapped to a property of our dto object
                 .ForMember(dto => dto.CategoryName, p => p.MapFrom(p => p.Category!.Name))
                 .ForMember(dto => dto.BrandName, p => p.MapFrom(p => p.Brand!.Name));
+            CreateMap<Address, AddressDto>().ReverseMap();
         }
     }
 }
