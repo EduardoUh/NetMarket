@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dtos;
@@ -6,10 +7,11 @@ using WebApi.Errors;
 
 namespace WebApi.Controllers
 {
-    public class UserController(UserManager<User> userManager, SignInManager<User> signInManager) : BaseApiController
+    public class UserController(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService) : BaseApiController
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly SignInManager<User> _signInManager = signInManager;
+        private readonly ITokenService _tokenService = tokenService;
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login([FromBody] LoginDto loginDto)
@@ -34,7 +36,7 @@ namespace WebApi.Controllers
                 UserName = user.UserName!,
                 Name = user.Name,
                 LastName = user.LastName,
-                Token = "Hardcoded token"
+                Token = _tokenService.CreateToken(user)
             };
         }
 
@@ -62,7 +64,7 @@ namespace WebApi.Controllers
                 LastName = user.LastName,
                 Email = user.Email,
                 UserName = user.UserName,
-                Token = "Hardcoded token"
+                Token = _tokenService.CreateToken(user)
             };
         }
 

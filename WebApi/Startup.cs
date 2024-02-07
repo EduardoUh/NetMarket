@@ -2,8 +2,11 @@
 using BusinessLogic.Logic;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WebApi.Dtos;
 using WebApi.Middleware;
 
@@ -15,6 +18,9 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // adding token service
+            services.AddScoped<ITokenService, TokenService>();
+
             // setting up Identity Core
             // builder is an instance of identity core (representation of the model)
             var builder = services.AddIdentityCore<User>();
@@ -24,8 +30,19 @@ namespace WebApi
             // adding user manager allow us to use that object to perform transactions over the security tables
             builder.AddSignInManager<SignInManager<User>>();
 
-            // adding authentication
-            services.AddAuthentication();
+            // adding authentication, based on jwt
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"]!)),
+                        ValidIssuer = Configuration["Token:Issuer"],
+                        ValidateIssuer = true,
+                        ValidateAudience = false
+                    };
+                });
 
             services.AddAutoMapper(typeof(MappingProfiles));
             // we must add the typeof method since the interface and its implementation work with generics
