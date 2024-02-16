@@ -76,7 +76,7 @@ namespace WebApi.Controllers
             return _mapper.Map<Product, ProductDto>(product);
         }
 
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] Product product)
         {
@@ -91,7 +91,7 @@ namespace WebApi.Controllers
             return Ok(_mapper.Map<Product, ProductDto>(product));
         }
 
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductDto>> UpdateProduct(int id, [FromBody] Product product)
         {

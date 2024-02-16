@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Express",
+    "Description": "Fastest shipping method",
+    "Price": 15
+  },
+  {
+    "Name": "Regular",
+    "Description": "Regular shipping method, lands in five days",
+    "Price": 10
+  },
+  {
+    "Name": "Cheap",
+    "Description": "Cheapest shipping method",
+    "Price": 5
+  },
+  {
+    "Name": "Free shipping",
+    "Description": "Free shiping, lands in 40 days",
+    "Price": 0
+  }
+]

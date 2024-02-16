@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.Orders;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -11,6 +12,9 @@ namespace BusinessLogic.Data
         public DbSet<Product> Product { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Brand> Brand { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderItem> OrderItem { get; set; }
+        public DbSet<ShippingType> ShippingType { get; set; }
 
         // configuring ef to read the configurations and constraints we added to our entities(future tables)
         protected override void OnModelCreating(ModelBuilder modelBuilder)

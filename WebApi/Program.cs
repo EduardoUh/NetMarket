@@ -41,10 +41,11 @@ namespace WebApi
                     await NetMarketDbContextData.LoadDataAsync(context, loggerFactory);
 
                     var userManager = services.GetRequiredService<UserManager<User>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var identityContext = services.GetRequiredService<SecurityDbContext>();
 
                     await identityContext.Database.MigrateAsync();
-                    await SecurityDbContextData.SeedUserAsync(userManager, loggerFactory);
+                    await SecurityDbContextData.SeedUserAsync(userManager, roleManager, loggerFactory);
                 }
                 catch (Exception ex)
                 {

@@ -6,7 +6,7 @@ namespace BusinessLogic.Data
 {
     public class SecurityDbContextData
     {
-        public static async Task SeedUserAsync(UserManager<User> userManager, ILoggerFactory loggerFactory)
+        public static async Task SeedUserAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ILoggerFactory loggerFactory)
         {
             try
             {
@@ -32,6 +32,16 @@ namespace BusinessLogic.Data
                     var logger = loggerFactory.CreateLogger<SecurityDbContextData>();
 
                     logger.LogInformation("User created successfully");
+                }
+
+                if (!roleManager.Roles.Any())
+                {
+                    var role = new IdentityRole
+                    {
+                        Name = "ADMIN"
+                    };
+
+                    await roleManager.CreateAsync(role);
                 }
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.Orders;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
@@ -38,6 +39,14 @@ namespace BusinessLogic.Data
                     await context.SaveChangesAsync();
                 }
 
+                if (!context.ShippingType.Any())
+                {
+                    var shippingTypesData = File.ReadAllText(@"D:\projects\Learning\DotNet\NetMarket\NetMarket\BusinessLogic\LoadData\shippingType.json");
+                    var shippingTypesCollection = JsonSerializer.Deserialize<List<ShippingType>>(shippingTypesData);
+
+                    await context.ShippingType.AddRangeAsync(shippingTypesCollection!);
+                    await context.SaveChangesAsync();
+                }
             }
             catch (Exception ex)
             {

@@ -7,5 +7,6 @@ namespace Core.Entities
         public string Name { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public Address Address { get; set; }
+        public string? Image { get; set; }
     }
 }

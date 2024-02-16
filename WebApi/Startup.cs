@@ -2,9 +2,11 @@
 using BusinessLogic.Logic;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System.Text;
@@ -19,6 +21,9 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // adding unit of work service
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             // adding token service
             services.AddScoped<ITokenService, TokenService>();
 
@@ -27,6 +32,7 @@ namespace WebApi
             var builder = services.AddIdentityCore<User>();
             // adding services for the user type, it needs it to buil the tables
             builder = new IdentityBuilder(builder.UserType, builder.Services);
+            builder.AddRoles<IdentityRole>();
             builder.AddEntityFrameworkStores<SecurityDbContext>();
             // adding user manager allow us to use that object to perform transactions over the security tables
             builder.AddSignInManager<SignInManager<User>>();
@@ -48,6 +54,7 @@ namespace WebApi
             services.AddAutoMapper(typeof(MappingProfiles));
             // we must add the typeof method since the interface and its implementation work with generics
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IGenericSecurityRepository<>), typeof(GenericSecurityRepository<>));
 
             services.AddDbContext<NetMarketDbContext>(options =>
             {
@@ -63,10 +70,14 @@ namespace WebApi
             redisConfiguration.AbortOnConnectFail = false;
             services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConfiguration));
 
+            // adding service for the time in which records are created or updated
+            services.TryAddSingleton<ISystemClock, SystemClock>();
+
             // this way we are adding a object of type IProductRepository with an implementation type
             // specified in ProductRepository to the specified IServiceColleciton
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddControllers();
 
             // adding cors

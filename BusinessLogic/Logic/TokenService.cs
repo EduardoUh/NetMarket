@@ -19,7 +19,7 @@ namespace BusinessLogic.Logic
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:Key"]!));
         }
 
-        public string CreateToken(User user)
+        public string CreateToken(User user, IList<string> roles)
         {
             // a token is composed by three parts:
             // claims -> data about the user you want to include
@@ -35,6 +35,14 @@ namespace BusinessLogic.Logic
                 new Claim("lastname", user.LastName),
                 new Claim("username", user.UserName!)
             };
+
+            if (roles != null && roles.Count > 0)
+            {
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
+            }
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
